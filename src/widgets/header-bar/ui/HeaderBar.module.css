@@ -1,0 +1,22 @@
+.bar {
+    -webkit-app-region: drag;
+    display: flex;
+    justify-content: flex-end;
+
+    background: #858585;
+}
+
+button {
+    -webkit-app-region: no-drag;
+    background: transparent;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.icon {
+    width: 16px;
+    height: 16px;
+    color: white;
+    fill: #ffffff;
+}
