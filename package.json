@@ -16,7 +16,7 @@
         "zustand": "^5.0.8"
     },
     "scripts": {
-        "start:web": "cross-env BROWSER=none PORT=3000 react-scripts start",
+        "start:web": "cross-env BROWSER=none PORT=3000 FAST_REFRESH=false react-scripts start",
         "start:electron": "wait-on http://localhost:3000 && electron ./electron/main.js",
         "dev": "concurrently \"npm:start:web\" \"npm:start:electron\""
     },

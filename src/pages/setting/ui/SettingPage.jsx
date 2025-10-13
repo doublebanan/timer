@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useTimerStore } from "../../../store/useTimerStore";
 
 import { useDurationField } from "../../../features/timer/hooks/useDurationField";
 
@@ -50,6 +51,13 @@ const SettingPage = () => {
         { label: "Большой перерыв:", field: "long" },
     ];
 
+    const soundEnabled = useTimerStore((s) => s.soundEnabled);
+    const notificationEnabled = useTimerStore((s) => s.notificationEnabled);
+    const setSoundEnabled = useTimerStore((s) => s.setSoundEnabled);
+    const setNotificationEnabled = useTimerStore(
+        (s) => s.setNotificationEnabled
+    );
+
     return (
         <div className={styles.setting}>
             <Link to={`/home`}>
@@ -65,16 +73,38 @@ const SettingPage = () => {
             <div className={styles.item}>
                 <div className={styles.text}> Звук</div>
                 <div className={styles.toggle}>
-                    <button className={styles.on}>вкл</button>
+                    <button
+                        className={soundEnabled ? styles.on : styles.off}
+                        onClick={() => setSoundEnabled(true)}
+                    >
+                        вкл
+                    </button>
 
-                    <button className={styles.of}>выкл</button>
+                    <button
+                        className={!soundEnabled ? styles.on : styles.off}
+                        onClick={() => setSoundEnabled(false)}
+                    >
+                        выкл
+                    </button>
                 </div>
             </div>
             <div className={styles.item}>
                 <div className={styles.text}> Уведомление</div>
                 <div className={styles.toggle}>
-                    <button className={styles.on}>вкл</button>
-                    <button className={styles.of}>выкл</button>
+                    <button
+                        className={notificationEnabled ? styles.on : styles.off}
+                        onClick={() => setNotificationEnabled(true)}
+                    >
+                        вкл
+                    </button>
+                    <button
+                        className={
+                            !notificationEnabled ? styles.on : styles.off
+                        }
+                        onClick={() => setNotificationEnabled(false)}
+                    >
+                        выкл
+                    </button>
                 </div>
             </div>
         </div>

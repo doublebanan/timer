@@ -1,0 +1,290 @@
+.widget {
+    display: grid;
+    grid-template-columns: 140px 1fr 110px;
+
+    padding: 12px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+    align-items: stretch;
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto,
+        "Helvetica Neue", Arial;
+}
+
+.left {
+    width: 140px;
+    display: flex;
+    align-items: flex-start;
+}
+.leftInner {
+    width: 100%;
+}
+.leftTitle {
+    font-size: 14px;
+    color: #333;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+}
+.lessonList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.lessonItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+    background: #f5f5f7;
+}
+.lessonBtn {
+    display: block;
+    text-align: left;
+    padding: 8px 10px;
+
+    background: #f5f5f7;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+}
+.leftLessons {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.leftLessons button {
+    padding: 0;
+}
+
+.main {
+    flex: 1;
+    display: flex;
+
+    gap: 12px;
+    min-width: 260px;
+}
+
+.topBubbles {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    height: 40px;
+}
+.smallBubble {
+    background: #fff;
+    border: 2px solid #e2e8f0;
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    color: #333;
+}
+
+.barsArea {
+    display: flex;
+    align-items: flex-end;
+    gap: 20px;
+    padding: 8px 8px 0 8px;
+    min-height: 220px;
+}
+
+.bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 18px;
+    flex: 1;
+    padding-left: 12px;
+}
+.barWrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 48px;
+}
+.bar {
+    width: 24px;
+    background: #87888a;
+    border-radius: 6px 6px 0 0;
+    transition: height 300ms ease;
+}
+.barLabel {
+    margin-top: 8px;
+    font-size: 12px;
+    color: #555;
+}
+
+.totalBox {
+    width: 110px;
+    display: flex;
+    justify-content: center;
+
+    align-items: flex-start;
+}
+.totalCircle {
+    width: 84px;
+    height: 84px;
+    border-radius: 50%;
+    background: #fff;
+    border: 6px solid #e6f0ff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.totalValue {
+    font-weight: 700;
+    font-size: 20px;
+    color: #1f6feb;
+}
+.totalText {
+    font-size: 12px;
+    color: #555;
+}
+
+.bottom {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.lessonPill {
+    background: #111827;
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-weight: 600;
+    margin-top: 76px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.datesScroll {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding: 6px 4px;
+    align-items: center;
+}
+.dateCell {
+    min-width: 44px;
+    text-align: center;
+    padding: 6px;
+    border-radius: 6px;
+    background: #f8fafc;
+    border: 1px solid #e6eef9;
+}
+.dateNum {
+    font-weight: 700;
+}
+.dateKey {
+    font-size: 11px;
+    color: #666;
+}
+
+.icon {
+    width: 20px;
+    height: 20px;
+    margin-bottom: 5px;
+}
+.iconLesson {
+    width: 16px;
+    height: 16px;
+}
+
+.itemLesson {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.plusBlock {
+    background: white;
+    padding: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    min-width: 150px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    animation: slideUp 0.3s ease-out;
+    z-index: 1001;
+}
+
+.inputPlus {
+    padding: 12px 16px;
+    border: 2px solid #e1e5e9;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+.inputPlus:focus {
+    border-color: black;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.btnPlus {
+    padding: 12px 24px;
+    background: black;
+    color: white;
+    border: none;
+
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btnPlus:hover {
+    background: rgb(116, 114, 114);
+    transform: translateY(-1px);
+}
+
+.btnPlus:active {
+    transform: translateY(0);
+}
+
+/* Анимации */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.plusBlock {
+    cursor: auto;
+}
+
+.iconPlus {
+    width: 25px;
+    height: 25px;
+    margin-bottom: 5px;
+    color: white;
+}

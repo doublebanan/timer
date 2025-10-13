@@ -1,25 +1,57 @@
 import { useEffect, useRef } from "react";
 import { useTimerStore } from "../../../store/useTimerStore";
 
-export const useTimerEngine = () => {
-    const tick = useTimerStore((s) => s.tick);
-    const isRunning = useTimerStore((s) => s.isRunning);
-    const flushToStats = useTimerStore((s) => s.flushToStats);
-    const ref = useRef(null);
+export function useTimerEngine() {
+    const intervalRef = useRef(null);
 
     useEffect(() => {
-        if (!isRunning) return;
-        if (ref.current) clearInterval(ref.current);
-        ref.current = setInterval(() => tick(), 1000);
-        return () => {
-            clearInterval(ref.current);
-            ref.current = null;
-        };
-    }, [isRunning, tick]);
+        const startInterval = () => {
+            if (intervalRef.current) {
+                return;
+            }
 
-    useEffect(() => {
-        return () => {
-            flushToStats();
+            intervalRef.current = setInterval(() => {
+                try {
+                    const state = useTimerStore.getState();
+
+                    if (!state.isRunning) {
+                        return;
+                    }
+
+                    state.tick();
+                } catch (err) {}
+            }, 1000);
         };
-    }, [flushToStats]);
-};
+
+        const stopInterval = () => {
+            if (intervalRef.current) {
+                clearInterval(intervalRef.current);
+                intervalRef.current = null;
+            }
+        };
+
+        // Подписка на изменения isRunning
+        const unsub = useTimerStore.subscribe(
+            (s) => s.isRunning,
+            (isRunning) => {
+                if (isRunning) {
+                    startInterval();
+                } else {
+                    stopInterval();
+                }
+            }
+        );
+
+        // Проверяем начальное состояние
+        const initialState = useTimerStore.getState().isRunning;
+
+        if (initialState) {
+            startInterval();
+        }
+
+        return () => {
+            stopInterval();
+            unsub();
+        };
+    }, []);
+}
