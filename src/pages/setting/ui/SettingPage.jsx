@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
-import { useTimerStore } from "../../../store/useTimerStore";
+
+import { useTimer } from "../../../store/timer";
 
 import { useDurationField } from "../../../features/timer/hooks/useDurationField";
 
@@ -51,12 +52,19 @@ const SettingPage = () => {
         { label: "Большой перерыв:", field: "long" },
     ];
 
-    const soundEnabled = useTimerStore((s) => s.soundEnabled);
-    const notificationEnabled = useTimerStore((s) => s.notificationEnabled);
-    const setSoundEnabled = useTimerStore((s) => s.setSoundEnabled);
-    const setNotificationEnabled = useTimerStore(
-        (s) => s.setNotificationEnabled
-    );
+    // const soundEnabled = useTimerStore((s) => s.soundEnabled);
+    // const notificationEnabled = useTimerStore((s) => s.notificationEnabled);
+    // const setSoundEnabled = useTimerStore((s) => s.setSoundEnabled);
+    // const setNotificationEnabled = useTimerStore(
+    //     (s) => s.setNotificationEnabled
+    // );
+
+    const {
+        soundEnabled,
+        notificationEnabled,
+        setSoundEnabled,
+        setNotificationEnabled,
+    } = useTimer();
 
     return (
         <div className={styles.setting}>

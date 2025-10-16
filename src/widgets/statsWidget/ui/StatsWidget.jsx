@@ -1,10 +1,7 @@
 import { useState, useMemo, useRef } from "react";
 import { Link } from "react-router-dom";
 
-import { useTimerStore } from "../../../store/useTimerStore";
-
-import { ReactComponent as Back } from "../../../shared/assets/icons/back.svg";
-import { ReactComponent as Plus } from "../../../shared/assets/icons/plus.svg";
+import { useTimer } from "../../../store/timer";
 
 import { getLastNDates } from "../lib/getLastNDates";
 import { LessonList } from "./LessonList";
@@ -12,6 +9,10 @@ import { BarsArea } from "./BarsArea";
 import { AddLessonModal } from "./AddLessonsModal";
 import { DeleteLessonModal } from "./DeleteLessonsModal";
 import { UpdateLessonModal } from "./UpdateLessonModal";
+import { sumByDateRange } from "../lib/sumByDateRange";
+
+import { ReactComponent as Back } from "../../../shared/assets/icons/back.svg";
+import { ReactComponent as Plus } from "../../../shared/assets/icons/plus.svg";
 
 import styles from "./StatsWidget.module.css";
 
@@ -19,18 +20,20 @@ export default function StatsWidget({ days = 7 }) {
     const inputRef = useRef(null);
     const updateRef = useRef(null);
 
+    const {
+        removeLesson,
+        addLesson,
+        updateLesson,
+        byDay,
+
+        lessons,
+        currentLessonId,
+        setCurrentLesson,
+    } = useTimer();
+
     const [isOpenPlus, setIsOpenPlus] = useState(false);
     const [deleteLessonId, setDeleteLessonId] = useState(null);
     const [updateLessonId, setUpdateLessonsId] = useState(null);
-
-    const lessons = useTimerStore((s) => s.lessons);
-    const removeLesson = useTimerStore((s) => s.removeLesson);
-    const addLesson = useTimerStore((s) => s.addLesson);
-    const updateLesson = useTimerStore((s) => s.updateLesson);
-
-    const currentLessonId = useTimerStore((s) => s.currentLessonId);
-    const setCurrentLesson = useTimerStore((s) => s.setCurrentLesson);
-    const byDay = useTimerStore((s) => s.byDay);
 
     const dates = useMemo(() => getLastNDates(days), [days]);
 
@@ -47,9 +50,26 @@ export default function StatsWidget({ days = 7 }) {
     }, [byDay, dates, currentLessonId]);
 
     const perDayMinutes = combined.map(([_, mins]) => mins);
+    console.log(perDayMinutes);
     const totalMinutes = perDayMinutes.reduce((a, b) => a + b, 0);
     const maxMinutes = Math.max(...perDayMinutes, 1);
     const currentLesson = lessons.find((l) => l.id === currentLessonId) ?? null;
+
+    const now = new Date();
+
+    const oneWeekAgo = new Date(now);
+    oneWeekAgo.setDate(now.getDate() - 6);
+    const oneMonthAgo = new Date(now);
+    oneMonthAgo.setMonth(now.getMonth() - 1);
+
+    const toDayMinutes = sumByDateRange(byDay, currentLessonId, now, now);
+    const weekMinutes = sumByDateRange(byDay, currentLessonId, oneWeekAgo, now);
+    const monthMinutes = sumByDateRange(
+        byDay,
+        currentLessonId,
+        oneMonthAgo,
+        now
+    );
 
     return (
         <div className={styles.widget}>
@@ -81,8 +101,19 @@ export default function StatsWidget({ days = 7 }) {
             <BarsArea combined={combined} maxMinutes={maxMinutes} />
             <div className={styles.totalBox}>
                 <div className={styles.totalCircle}>
-                    <div className={styles.totalValue}>{totalMinutes}</div>
+                    <div className={styles.totalValue}>{toDayMinutes}</div>
                     <div className={styles.totalText}>min</div>
+                    <div>day</div>
+                </div>
+                <div className={styles.totalCircle}>
+                    <div className={styles.totalValue}>{weekMinutes}</div>
+                    <div className={styles.totalText}>min</div>
+                    <div>week</div>
+                </div>
+                <div className={styles.totalCircle}>
+                    <div className={styles.totalValue}>{monthMinutes}</div>
+                    <div className={styles.totalText}>min</div>
+                    <div>month</div>
                 </div>
             </div>
 

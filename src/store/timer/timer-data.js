@@ -18,7 +18,9 @@ export const useTimerDataStore = create()(
 
             addLesson: (name) =>
                 set((s) => {
-                    const maxId = Math.max(...s.lessons.map((l) => l.id), 0);
+                    const maxId = s.lessons.length
+                        ? Math.max(...s.lessons.map((l) => l.id))
+                        : 0;
                     return { lessons: [...s.lessons, { id: maxId + 1, name }] };
                 }),
 
@@ -43,11 +45,9 @@ export const useTimerDataStore = create()(
 
             flushToStats: (seconds) => {
                 if (!seconds || seconds <= 0) return;
-
                 const key = dayKey();
                 const lessonId = get().currentLessonId || "unknown";
                 const currentMode = get().mode;
-
                 if (currentMode !== "work") return;
 
                 set((s) => {
@@ -66,11 +66,9 @@ export const useTimerDataStore = create()(
 
             nextMode: () => {
                 const { mode, workCount } = get();
-
                 if (mode === "work") {
                     const newCount = workCount + 1;
                     const isLong = newCount % 4 === 0;
-
                     set({
                         workCount: newCount,
                         mode: isLong ? "long" : "short",

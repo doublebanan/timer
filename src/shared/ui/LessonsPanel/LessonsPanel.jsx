@@ -1,9 +1,9 @@
-import { useTimerStore } from "../../../store/useTimerStore";
+import { useTimerDataStore } from "../../../store/timer/timer-data";
 
 import styles from "./LessonsPanel.module.css";
 
 export const LessonsPanel = ({ value, onChange, onClose }) => {
-    const lessons = useTimerStore((s) => s.lessons);
+    const lessons = useTimerDataStore((s) => s.lessons);
 
     return (
         <div className={styles.leassonsPanel}>

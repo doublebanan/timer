@@ -1,25 +1,17 @@
 import { useEffect, useRef } from "react";
-import { useTimerStore } from "../../../store/useTimerStore";
+import { useTimerCoreStore } from "../../../store/timer/timer-core";
+import { useTimer } from "../../../store/timer";
 
 export function useTimerEngine() {
     const intervalRef = useRef(null);
+    const timer = useTimer();
 
     useEffect(() => {
         const startInterval = () => {
-            if (intervalRef.current) {
-                return;
-            }
+            if (intervalRef.current) return;
 
             intervalRef.current = setInterval(() => {
-                try {
-                    const state = useTimerStore.getState();
-
-                    if (!state.isRunning) {
-                        return;
-                    }
-
-                    state.tick();
-                } catch (err) {}
+                timer.tick();
             }, 1000);
         };
 
@@ -30,28 +22,20 @@ export function useTimerEngine() {
             }
         };
 
-        // Подписка на изменения isRunning
-        const unsub = useTimerStore.subscribe(
+        const unsub = useTimerCoreStore.subscribe(
             (s) => s.isRunning,
             (isRunning) => {
-                if (isRunning) {
-                    startInterval();
-                } else {
-                    stopInterval();
-                }
+                if (isRunning) startInterval();
+                else stopInterval();
             }
         );
 
-        // Проверяем начальное состояние
-        const initialState = useTimerStore.getState().isRunning;
-
-        if (initialState) {
-            startInterval();
-        }
+        const initial = useTimerCoreStore.getState().isRunning;
+        if (initial) startInterval();
 
         return () => {
             stopInterval();
             unsub();
         };
-    }, []);
+    }, [timer]);
 }

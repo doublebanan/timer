@@ -7,16 +7,13 @@ export const useTimer = () => {
 
     const tick = () => {
         if (!core.isRunning) return;
-
         core.tick();
 
-        const target = core.durations[data.mode] * 60;
+        const target = (core.durations[data.mode] ?? 0) * 60;
         if (core.seconds >= target) {
-            // Таймер завершился
             if (data.mode === "work") {
                 data.flushToStats(core.seconds);
             }
-
             data.nextMode();
             core.reset();
             core.playEnd();
@@ -25,11 +22,7 @@ export const useTimer = () => {
 
     return {
         ...core,
-
         ...data,
-
         tick,
     };
 };
-
-export { useTimerCoreStore, useTimerDataStore };

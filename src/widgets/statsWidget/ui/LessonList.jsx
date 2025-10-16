@@ -20,7 +20,9 @@ export function LessonList({
                         }`}
                         onClick={() => onSelect(l.id)}
                     >
-                        {l.name}
+                        {l.name.length > 8
+                            ? `${l.name.slice(0, 6)}...`
+                            : l.name}
                     </button>
                     <div className={styles.lessonBlock}>
                         <button onClick={() => onEdit(l.id)}>

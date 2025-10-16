@@ -1,12 +1,11 @@
 import { useState, useEffect, useCallback } from "react";
 
-import { useTimerStore } from "../../../store/useTimerStore";
+import { useTimerCoreStore } from "../../../store/timer/timer-core";
 
 const clamp = (n, min = 1, max = 180) => Math.max(min, Math.min(max, n));
 
 export function useDurationField(field, { min = 1, max = 180 } = {}) {
-    const durations = useTimerStore((s) => s.durations);
-    const setDurations = useTimerStore((s) => s.setDurations);
+    const { durations, setDurations } = useTimerCoreStore();
 
     const [local, setLocal] = useState(String(durations[field]));
 
@@ -14,7 +13,7 @@ export function useDurationField(field, { min = 1, max = 180 } = {}) {
 
     const bump = useCallback(
         (delta) => {
-            const cur = useTimerStore.getState().durations[field] ?? 0;
+            const cur = useTimerCoreStore.getState().durations[field] ?? 0;
             setDurations({ [field]: clamp(cur + delta, min, max) });
         },
         [field, setDurations, min, max]
